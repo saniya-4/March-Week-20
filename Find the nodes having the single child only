@@ -1,0 +1,75 @@
+import java.util.*;
+public class singlenode {
+    static class Node{
+        int data;
+        Node left;
+        Node right;
+        Node(int data)
+        {
+            this.data=data;
+            this.left=null;
+            this.right=null;
+        }
+    }
+    public static Node build(int []arr)
+    {
+        Queue<Node>q=new LinkedList<>();
+        if(arr.length==0 || arr[0]==-1)
+        {
+            return null;
+        }
+        Node root=new Node(arr[0]);
+        q.add(root);
+        int i=1;
+        while(!q.isEmpty())
+        {
+            Node temp=q.poll();
+            if(i<arr.length && arr[i]!=-1)
+            {
+              temp.left=new Node(arr[i]);
+              q.add(temp.left);
+            }
+            i++;
+            if(i<arr.length && arr[i]!=-1)
+            {
+                temp.right=new Node(arr[i]);
+                q.add(temp.right);
+            }
+            i++;
+
+        }
+        return root;
+        
+    }
+    public static Node findSingleChild(Node root,List<Integer>ls)
+    {
+        if(root==null)
+        {
+            return null;
+        }
+        if((root.left==null && root.right!=null) || (root.right==null && root.left!=null))
+        {
+            ls.add(root.data);
+        }
+        findSingleChild(root.left,ls);
+        findSingleChild(root.right,ls);
+        return root;
+    }
+
+    public static void main(String[] args) {
+        Scanner sc=new Scanner(System.in);
+        int n=sc.nextInt();
+        int []arr=new int[n];
+        for(int i=0;i<n;i++)
+        {
+            arr[i]=sc.nextInt();
+        }
+        Node root=build(arr);
+        List<Integer>ans=new ArrayList<>();
+        findSingleChild(root,ans);
+        for(int i=0;i<ans.size();i++)
+        {
+           System.out.println(ans.get(i)+" ");
+        }
+    }
+}
